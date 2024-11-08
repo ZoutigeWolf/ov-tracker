@@ -5,14 +5,13 @@ import {
     useWindowDimensions,
     Easing,
 } from "react-native";
-import MapView, { Geojson, Polyline, Region } from "react-native-maps";
+import MapView, { Region } from "react-native-maps";
 import { useEffect, useRef, useState } from "react";
 import MapTypeSwitch from "@/components/MapTypeSwitch";
 import useLocation, { getLocation } from "@/hooks/useLocation";
 import IconButton from "@/components/IconButton";
 import MapLayerSelector from "@/components/MapLayerSelector";
 import MapInspector from "@/components/MapInspector";
-import Stop from "@/models/Stop";
 import { Settings } from "react-native";
 import LayerSettings from "@/types/LayerSettings";
 import useMapData from "@/hooks/api/useMapData";
@@ -20,6 +19,7 @@ import StopMarker from "@/components/StopMarker";
 import { Feature } from "geojson";
 import { LocationObject } from "expo-location";
 import ShapeLine from "@/components/ShapeLine";
+import { router } from "expo-router";
 
 type OffsetRegion = Region & {
     offset: {
@@ -245,6 +245,12 @@ export default function MapScreen() {
                 id={selectedItem?.id}
                 layers={layerConfig.visibleLayers}
                 onClose={closeInspector}
+                onTripSelect={(t) =>
+                    router.push({
+                        pathname: "./trip",
+                        params: { tripId: t.id },
+                    })
+                }
                 style={{
                     ...styles.inspector,
                     transform: [

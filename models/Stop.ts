@@ -20,8 +20,7 @@ interface Stop extends Base {
     id: string;
     code: string | null;
     name: string | null;
-    latitude: number | null;
-    longitude: number | null;
+    location: [number, number];
     type: LocationType;
     parentId: string | null;
     timezone: string | null;

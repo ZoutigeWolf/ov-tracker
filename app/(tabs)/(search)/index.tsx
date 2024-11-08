@@ -3,7 +3,13 @@ import TextField from "@/components/TextField";
 import useStops from "@/hooks/api/useStops";
 import useLocation from "@/hooks/useLocation";
 import { useState } from "react";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    SafeAreaView,
+    ScrollView,
+    FlatList,
+} from "react-native";
 
 export default function SearchScreen() {
     const [query, setQuery] = useState<string>("");
@@ -27,9 +33,14 @@ export default function SearchScreen() {
                 onChange={setQuery}
                 style={styles.searchBar}
             />
-            {stops.map((s) => (
-                <StopCard key={s.id} stop={s} />
-            ))}
+            <FlatList
+                data={stops}
+                keyExtractor={(s) => s.name ?? s.id}
+                renderItem={({ item }) => (
+                    <StopCard key={item.id} stop={item} />
+                )}
+                style={styles.list}
+            />
         </SafeAreaView>
     );
 }
@@ -42,5 +53,9 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         marginVertical: 16,
+    },
+    list: {
+        display: "flex",
+        height: "90%",
     },
 });

@@ -1,6 +1,8 @@
 import Agency from "./Agency";
 import Base from "./Base";
 import Route from "./Route";
+import Shape from "./Shape";
+import Stop from "./Stop";
 
 export enum WheelchairAccesibility {
     NoInformation,
@@ -16,8 +18,8 @@ export enum BikeAccesibility {
 
 interface Trip extends Base {
     id: string;
-    realtimeId: string;
-    serviceId: string;
+    realtime_id: string;
+    service_id: string;
     routeId: string;
     shapeId: string;
     blockId: string | null;
@@ -25,8 +27,11 @@ interface Trip extends Base {
     shortName: string | null;
     longName: string | null;
     direction: number;
-    wheelchairAccessible: WheelchairAccesibility;
-    bikesAllowed: BikeAccesibility;
+    wheelchair_accessible: WheelchairAccesibility;
+    bikes_allowed: BikeAccesibility;
+    shape: Shape | null;
+    route: Route | null;
+    stops: Stop[] | null;
 }
 
 export default Trip;

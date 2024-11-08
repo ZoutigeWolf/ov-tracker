@@ -13,18 +13,21 @@ import StopTimeDisplay from "./StopTimeDisplay";
 import { parseTimestamp, timeDiff } from "@/utils/time";
 import { PickupType } from "@/models/StopTime";
 import TRAIN_TYPES from "@/types/TrainTypes";
+import Trip from "@/models/Trip";
 
 const MapInspector = ({
     type,
     id,
     layers = [],
     onClose,
+    onTripSelect = undefined,
     style,
 }: {
     type: "stop" | null | undefined;
     id: string | null | undefined;
     layers?: number[];
     onClose: () => void;
+    onTripSelect?: (t: Trip) => void;
     style: object;
 }) => {
     return (
@@ -47,7 +50,11 @@ const MapInspector = ({
                     {!!type && !!id && (
                         <>
                             {type === "stop" && (
-                                <StopContent name={id} layers={layers} />
+                                <StopContent
+                                    name={id}
+                                    layers={layers}
+                                    onTripSelect={onTripSelect}
+                                />
                             )}
                         </>
                     )}
@@ -60,9 +67,11 @@ const MapInspector = ({
 const StopContent = ({
     name,
     layers = [],
+    onTripSelect = undefined,
 }: {
     name: string;
     layers?: number[];
+    onTripSelect?: (t: Trip) => void;
 }) => {
     const stops = useStops({ name: name, detailed: true });
     const stopTimes = useStopTimes({ name: name, detailed: true });
@@ -163,6 +172,7 @@ const StopContent = ({
                             <StopTimeDisplay
                                 key={`${t.trip!.id}`}
                                 stopTime={t}
+                                onPress={() => onTripSelect?.(t.trip!)}
                             />
                         ))}
                 </View>
